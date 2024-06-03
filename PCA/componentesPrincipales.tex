@@ -2,7 +2,7 @@
 
 \usepackage[T1]{fontenc}
 
-\usepackage[spanish, es-nodecimaldot]{babel}
+\usepackage[spanish, es-nodecimaldot, es-noquoting]{babel}
 %\usepackage{icomma} % Use dot as decimal separator
 \usepackage{booktabs} % For better-looking tables
 \usepackage{wrapfig}
@@ -108,11 +108,11 @@
 
 
 \newtheorem{prop}{Proposici\'on}
-\newtheorem{algo}[prop]{Algorithm}
-\newtheorem{teor}[prop]{Theorem}
-\newtheorem{lema}[prop]{Lemma}
-\newtheorem{coro}[prop]{Corollary}
-\newtheorem{defi}[prop]{Definition}
+\newtheorem{algo}[prop]{Algoritmo}
+\newtheorem{teor}[prop]{Teorema}
+\newtheorem{lema}[prop]{Lema}
+\newtheorem{coro}[prop]{Corolario}
+\newtheorem{defi}[prop]{Definici\'on}
 
 \newcommand{\ideal}[1]{{\left\langle{#1}\right\rangle}}
 \newcommand{\demo}{\textbf {Demostraci\'on. }}
@@ -136,6 +136,8 @@
 \newcommand{\CC}{{\mathbb C}}
 \newcommand{\eLL}{{\mathcal L}}
 
+
+\newcommand{\Id}{\textrm {Id}}
 
 
 \newcommand{\MinAss}{\textrm {MinAss}}
@@ -223,7 +225,7 @@ En estas notas desarrollamos los conceptos teóricos de álgebra lineal detrás 
 
 \section{Varianza, covarianza y correlación}
 
-\subsection{Varianza.} 
+\subsection{Varianza.}
 Ya vimos la f\'ormula de varianza para una variable $x = (x_1, x_2, \dots, x_n)$:
 $$
 \var(x) = \frac{\sum_{i=1}^n(x_i - \bar x)^2}{n},
@@ -292,7 +294,7 @@ $$
 \end{tikzpicture}
 \end{minipage}
 
-La correlación 
+La correlación
 $$\corr(x, y) = \frac{\langle x - \bar x, y - \bar y \rangle}{\|x - \bar x\|\|y - \bar y\|}$$
  es el coseno del ángulo entre $x - \bar x$ e $y - \bar y$.
 
@@ -304,7 +306,7 @@ $$\corr(x, y) = \frac{\langle x - \bar x, y - \bar y \rangle}{\|x - \bar x\|\|y 
 
 \subsection{Matriz de Covarianza}
 
-Consideramos ahora una matriz de datos $X \in \R^{N \times p}$, donde las $p$ columnas representan distintas variables y las $N$ filas, observaciones. 
+Consideramos ahora una matriz de datos $X \in \R^{N \times p}$, donde las $p$ columnas representan distintas variables y las $N$ filas, observaciones.
 \begin{itemize}
     \item La matriz de covarianza mide la relación lineal entre dos o más variables.
     \item Dada una matriz de datos \( X \) de \( N \) observaciones y \( p \) variables, la matriz de covarianza \( \Sigma \) se define como:
@@ -351,7 +353,7 @@ Si $\|v\| = 1$ (vector unitario), obtenemos $$longitud = \langle u, v \rangle.$$
 
 Si tenemos una matriz de datos $X \in \R^{N \times p}$, el vector de proyecciones sobre $v = (v_1, v_2)$ (unitario) ser\'a simplemente $Xv$.
 
-Si $X$ tiene dos columnas, 
+Si $X$ tiene dos columnas,
 $$
 Xv =
 \begin{pmatrix} x^1_1 & x^2_1 \\ x^1_2 & x^2_2 \\ \vdots & \vdots \\ x^1_n & x^2_n \end{pmatrix}
@@ -377,20 +379,45 @@ $$
 \var(X^\star v) = v^T \Sigma v
 $$
 
+
 \section{Componentes principales}
 
 \subsection{Primera componente}
 Para encontrar la dirección en la que las proyecciones tienen mayor varianza, debemos encontrar el vector $v$ que maximiza
 $$v^T \Sigma v.$$
 
-\textbf{Teoremas de Álgebra Lineal.} La matriz $\Sigma$ es simétrica y definida positiva, por lo tanto satisface las siguientes propiedades:
-\begin{itemize}
-\item Es diagonalizable.
-\item Todos los autovalores son reales no-negativos.
-\item Existe una base de autovectores ortogonales.
-\end{itemize}
+Repasamos algunas definiciones y teoremas de álgebra lineal. Para un desarrollo más completo, ver Sección 5.5 del Apunte de \'Algebra Lineal Computacional (\url{https://github.com/slap/ALC-apunte}).
 
-El vector $v$ que maximiza $v^T \Sigma v$ es el autovector de $\Sigma$ correspondiente al mayor autovalor.
+
+\begin{defi}\hfill
+\begin{enumerate}
+\item Decimos que una matriz $A \in \R^{n \times n}$ es \emph{simétrica} si $A = A^T$ (equivalentemente, $a_{ij} = a_{ji}$ para todo $1 \le i, j \le n$).
+\item Si una matriz $A \in \R^{n \times n}$ es simétrica y $v^T A v \ge 0$ para todo $v \in \R^n$, decimos que $A$ es \emph{semidefinida positiva}. Si $v^T A v > 0$ para todo $v \in \R^n$ decimos que $A$ es \emph{definida positiva}.
+\end{enumerate}
+\end{defi}
+
+\begin{prop}\hfill
+\begin{enumerate}
+\item Si $A \in \R^{n \times n}$ es simétrica, entonces $A$ es diagonalizable, admite una base ortonormal de autovectores y todos los autovalores de $A$ son reales. Es decir, existe una matriz $U \in \R^{n \times n}$ unitaria ($U^T U = \Id$) tal que
+    $$
+    A = U D U^T,
+    $$
+donde $D$ es una matriz diagonal con los autovalores de $A$ en la diagonal. Las columnas de $U$ son los autovectores de $A$.
+\item Adicionalmente, si $A \in \R^{n \times n}$ es semidefinida positiva, todos los autovalores de $A$ son no-negativos.
+\item Si $A \in \R^{n \times n}$ es definida positiva, todos los autovalores de $A$ son no-negativos.
+\end{enumerate}
+\end{prop}
+
+\textbf{Observación.} Si $A$ es definida positiva, todos sus autovalores son positivos y por lo tanto $A$ es inversible.
+
+\begin{prop}
+Si $A \in \R^{n \times p}$ ($n > p$) y definimos $X = A^T A \in \R^{p \times p}$, entonces $X$ es semidefinida positiva.
+
+Si las columnas de $A$ son linealmente independientes (es decir $A$ tiene rango $p$), entonces $X$ es definida positiva.
+\end{prop}
+
+
+Utilizando estos resultados, se puede probar que el vector $v$ que maximiza $v^T \Sigma v$ es el autovector de $\Sigma$ correspondiente al mayor autovalor.
 
 Este vector $v$ es la dirección de la primera componente principal.
 
