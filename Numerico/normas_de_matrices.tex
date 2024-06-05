@@ -1,0 +1,122 @@
+\documentclass[12pt]{article}
+%\include{amsfonts}
+\usepackage{amssymb,amsmath,amsthm,latexsym,epsfig,euscript,multicol}
+%\usepackage{amsthm}
+%\usepackage{enumitem}
+\usepackage[utf8]{inputenc}
+\usepackage[spanish]{babel}
+
+% Caracteres especiales
+\def\A{\mathbb{A}}
+\def\C{\mathbb{C}}
+\def \N{\mathbb{N}}
+\def \P{\mathbb{P}}
+\def \Q{\mathbb{Q}}
+\def \R{\mathbb{R}}
+\def \Z{\mathbb{Z}}
+\def \sen{\textrm{sen}}
+
+%\newtheorem{theorem}{Theorem}
+%\newtheorem{prop}{Proposici\'on}[theorem]
+%\newtheorem{lemma}[theorem]{Lemma}
+
+%\theoremstyle{definition}
+%\newtheorem{ejer}{Ejercicio}
+\newcommand{\bej}{\begin{ejer}}
+\newcommand{\fej}{\end{ejer}}
+
+\def\dt{\Delta t}
+\def\dx{\Delta x}
+
+\topmargin-2cm \vsize 29.5cm \hsize 21cm
+\setlength{\textwidth}{16.75cm}\setlength{\textheight}{23.5cm}
+\setlength{\oddsidemargin}{0.0cm}
+\setlength{\evensidemargin}{0.0cm}
+
+
+\begin{document}
+
+\newtheorem{theorem}{Theorem}
+\newtheorem{prop}[theorem]{Proposici\'on}
+%----------------------------------------------------------
+%Encabezado:
+
+\vskip 0.2cm
+
+\date{\today}
+
+ \vskip 0.2cm
+
+\noindent
+ {\bf Peque\~nos comentarios al apunte ``Elementos de C\'alculo Num\'erico'' de R. Dur\'an, S. Lasalle y J. Rossi}
+
+ \makeatletter
+
+
+\vskip 0.2cm
+
+ \bigskip
+ \centerline{\ttfamily \@date}
+ \bigskip
+
+
+\begin{itemize}
+
+\item (p\'agina 25) En la demostraci\'on de $\|A\|_2 = \sqrt{\rho(A^TA)}$ para una matriz $A$ arbitraria, se utiliza que $A^TA$ es positiva semidefinida (y por lo tanto, todos los autovalores son no-negativos) para probar la igualdad tomando $\mu_j = \mu_{\max}$.
+Esto se puede demostrar f\'acilmente por la igualdad $z^T A^T A z = (Az)^T Az = \|Az\|_2^2 \ge 0$.
+
+\item (p\'agina 40, punto 1.) Tanto el algoritmo de Cholesky como el de Gauss tienen complejidad $O(N^3)$, pero la cantidad de productos de los algoritmos com\'unmente utilizados es $N^3/6$ para Cholesky y $N^3/3$ para Gauss. 
+
+\item (p\'agina 44, demostraci\'on del Teorema 3.4). En la demostraci\'on de la desigualdad $\rho(A) \le \|A\|$, la afirmaci\'on $\|A\|$ en $\R$ es igual a $\|A\|$ en $\C$ vale para las normas comunes $\|\ \|_1$, $\|\ \|_2$, $\|\ \|_\infty$, usando las extensiones usuales a $\C$, pero una norma inducida en $\R$ puede no estar definida para elementos en $\C$, y se necesita una demostraci\'on m\'as general.
+
+A continuaci\'on se da la demostraci\'on de esa desigualdad tomada de ``Matrices: Theory and Applications'', de Denis Serre (Proposici\'on 4.1.6, p\'agina 66):
+
+\begin{prop}
+ Para cualquier norma inducida $\|\ \|$ en $\R^{n\times n}$, se cumple $\rho(A) \le \|A\|$.
+\end{prop}
+\begin{proof}
+ El caso $K = \C$ es simple, utilizando el argumento en el apunte.
+
+ Para el caso $K = \R$, fijamos una norma inducida $N_\C$ en $\C^{n\times n}$ y sea $N_\R$ la restricci\'on a $\R^{n \times n}$. Es f\'acil ver que $N_\R$ es una norma en $\R^{n \times n}$ (verifica los axiomas de norma), aunque no necesariamente es una norma inducida.
+
+ Dada ahora una norma inducida $\|\ \|$ en $\R^{n \times n}$, tenemos por la equivalencia de normas en cualquier espacio vectorial de dimensi\'on finita que
+  \[
+  \rho(A)^k = \rho(A^k) \le N_\C(A^k) = N_\R(A^k) \le C \|A^k\| \le C \| A\|^k,
+ \]
+ para alguna constante $C > 0$. Por lo tanto,
+\[
+ \rho(A) \le C^{1/k} \|A\|
+\]
+y tomando l\'imite $k \rightarrow \infty$ de ambos lados, obtenemos $\rho(A) \le \|A\|$.
+
+
+\end{proof}
+
+
+\item (p\'agina 47, demostraci\'on del Corolario 3.7) Es sencillo pero no es inmediato ver que si $\|B^k\|^{1/k} \rightarrow \rho(B)$ vale para una norma particular, vale para cualquier norma por equivalencia de normas. 
+    
+    Dada una norma $\| \|$, existen $C_1$ y $C_2$ tales que
+    \[
+    C_1 \|B^k\|_\infty \le \|B^k\| \le C_2 \|B^k\|_\infty
+    \]
+    y por lo tanto
+    \[
+    C_1^{1/k} \|B^k\|_\infty^{1/k} \le \|B^k\|^{1/k} \le C_2^{1/k} \|B^k\|_\infty^{1/k}.
+    \]
+
+    Tomando l\'imites,
+    \[
+    \lim_{k \rightarrow \infty} C_1^{1/k} \|B^k\|_\infty^{1/k} \le \lim_{k \rightarrow \infty} \|B^k\|^{1/k} \le \lim_{k \rightarrow \infty} C_2^{1/k} \|B^k\|_\infty^{1/k},
+    \]
+    y como $C_1^{1/k} \rightarrow 1$ y $C_2^{1/k} \rightarrow 1$ se obtiene
+
+    \[
+    \rho(B) \le \lim_{k \rightarrow \infty} \|B^k\|^{1/k} \le \rho(B)
+    \]
+    y por lo tanto $\lim_{k \rightarrow \infty} \|B^k\|^{1/k} = \rho(B)$.
+
+    \item (p\'agina 72, segundo p\'arrafo) Se est\'a utilizando el desarrollo de Taylor de orden 1 (con t\'ermino de error) centrado en $x_n$.
+    \end{itemize}
+
+\end{document}
+%---------------------------------------------------------
